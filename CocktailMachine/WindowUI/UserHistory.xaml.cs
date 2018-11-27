@@ -12,17 +12,27 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CocktailMachine.Window;
 
 namespace CocktailMachine
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class UserHistory
     {
-        public MainWindow()
+        AddUserAccount addUserAccount = new AddUserAccount();
+        public UserHistory()
         {
             InitializeComponent();
+            addUserAccount.setPrivates(this);
+            btAddUser.Click += OpenAddUserAccount;
+        }
+
+        public void OpenAddUserAccount(object sender, RoutedEventArgs e)
+        {
+            addUserAccount.Show();
+            this.Hide();
         }
     }
 }
