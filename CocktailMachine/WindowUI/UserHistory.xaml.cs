@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using CocktailMachine.Class;
 using CocktailMachine.Window;
 
 namespace CocktailMachine
@@ -21,10 +23,19 @@ namespace CocktailMachine
     /// </summary>
     public partial class UserHistory
     {
-        AddUserAccount addUserAccount = new AddUserAccount();
+        private AddUserAccount addUserAccount = new AddUserAccount();
+        private ArduinoConnection arduinoConnection;
+        //private DispatcherTimer readMessageTimer;
+
         public UserHistory()
         {
             InitializeComponent();
+
+            MessageBuilder messageBuilder = new MessageBuilder('#', '%');
+            arduinoConnection = new ArduinoConnection("COM10", 9600, messageBuilder);
+
+            arduinoConnection.ConnectArduino();
+
             addUserAccount.setPrivates(this);
             btAddUser.Click += OpenAddUserAccount;
         }
