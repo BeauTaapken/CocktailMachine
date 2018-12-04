@@ -46,10 +46,19 @@ namespace CocktailMachine.Class
                 dtHistory.Clear();
                 conn.Open();
                 MySqlCommand command = new MySqlCommand(
-                    "INSERT INTO `fingerprint`(``, `Age`) VALUES(username, '1999-06-05')", //query doesn't work yet
+                    "INSERT INTO `fingerprints`(`Code`) VALUES(@fingerprintCode)",
                     conn);
+                command.Parameters.AddWithValue("@fingerprintCode", fingerprintCode);
+                MySqlCommand selectFingerprint = new MySqlCommand(
+                    "SELECT Code, fingerprints.ID FROM fingerprints" ,
+                    conn);
+                MySqlCommand insertUser = new MySqlCommand(
+                    "INSERT INTO `user`(`Name`, `Age`) VALUES (@name, @birthday)",
+                    conn);
+                insertUser.Parameters.AddWithValue("@name", username);
+                insertUser.Parameters.AddWithValue("@birthday", userBirthday);
                 conn.Close();
-                planningadapter = new MySqlDataAdapter();
+                planningadapter = new MySqlDataAdapter(command);
                 planningadapter.Fill(dtHistory);
 
                 return dtHistory;
