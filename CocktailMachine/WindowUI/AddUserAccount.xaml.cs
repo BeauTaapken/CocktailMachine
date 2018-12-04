@@ -36,5 +36,11 @@ namespace CocktailMachine.Window
         {
             this.userHistory = userHistory;
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            Application.Current.Shutdown();
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace CocktailMachine
     {
         private AddUserAccount addUserAccount = new AddUserAccount();
         private ArduinoConnection arduinoConnection;
-        //private DispatcherTimer readMessageTimer;
+        private GetUserHistory getUserHistory = new GetUserHistory();
 
         public UserHistory()
         {
@@ -34,16 +34,30 @@ namespace CocktailMachine
             MessageBuilder messageBuilder = new MessageBuilder('#', '%');
             arduinoConnection = new ArduinoConnection("COM10", 9600, messageBuilder);
 
+            tbHistorySearch.TextChanged += tbSearch_TextChanged;
             arduinoConnection.ConnectArduino();
 
             addUserAccount.setPrivates(this);
             btAddUser.Click += OpenAddUserAccount;
+
+            getUserHistory.FillUserHistory(dgUserHistory);
         }
 
-        public void OpenAddUserAccount(object sender, RoutedEventArgs e)
+        private void tbSearch_TextChanged(object sender, RoutedEventArgs e)
+        {
+            getUserHistory.SearchHistory(dgUserHistory, tbHistorySearch);
+        }
+
+        private void OpenAddUserAccount(object sender, RoutedEventArgs e)
         {
             addUserAccount.Show();
             this.Hide();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            Application.Current.Shutdown();
         }
     }
 }
