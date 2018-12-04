@@ -9,7 +9,7 @@ namespace CocktailMachine.Class
     class User
     {
         //TODO make function to add user to database and function to wait until the fingerprint scanner has been used and a value has been sent back. Made by Mark
-
+        Database DB = new Database();
         public bool CheckFingerprintScanner()
         {
             //Check if the fingerprint scanner has been used
@@ -21,6 +21,7 @@ namespace CocktailMachine.Class
             if (CheckFingerprintScanner())
             {
                 //add username, age and fingerprintCode to database
+                DB.uploadUserInfo(username, age, fingerprintCode);
             }
         }
          
