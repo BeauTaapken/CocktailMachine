@@ -11,32 +11,17 @@ namespace CocktailMachine.Class
 {
     class ArduinoConnection
     {
-        //TODO Connect to Arduino(use code from Technology lessons), Made by Beau
-        /// <summary>
-        /// Serial port used for the connection.
-        /// </summary>
         private SerialPort serialPort;
 
         private MessageBuilder messageBuilder;
 
         private DispatcherTimer readMessageTimer;
-
-        /// <summary>
-        /// The Baudrate of the communication (bytes per second)
-        /// </summary>
+        
         public int BaudRate { get { return serialPort.BaudRate; } }
 
-        /// <summary>
-        /// The serial port name
-        /// </summary>
         public string PortName { get { return serialPort.PortName; } }
-
-        /// <summary>
-        /// Creates a Serial Messenger
-        /// </summary>
-        /// <param name="portName">The name of the serial port</param>
-        /// <param name="baudRate">The speed</param>
-        /// <param name="messageBuilder">The messagebuilder used</param>
+        
+        //Initializes the arduino to be able to connect properly
         public ArduinoConnection(string portName, int baudRate, MessageBuilder messageBuilder)
         {
             if (portName == null)
@@ -61,10 +46,8 @@ namespace CocktailMachine.Class
 
             this.messageBuilder = messageBuilder;
         }
-
-        /// <summary>
-        /// Connect to the serial port
-        /// </summary>
+        
+        //Connects to the arduino and the serial port
         public void Connect()
         {
             if (!serialPort.IsOpen)
@@ -77,10 +60,8 @@ namespace CocktailMachine.Class
                 }
             }
         }
-
-        /// <summary>
-        /// Disconnect from the serial port
-        /// </summary>
+        
+        //Disconnects from the arduino and serial port
         public void Disconnect()
         {
             if (serialPort.IsOpen)
@@ -89,57 +70,35 @@ namespace CocktailMachine.Class
             }
         }
 
-        /// <summary>
-        /// Gets the available serial port names.
-        /// </summary>
-        /// <returns>The names of the available serial ports</returns>
+        //Gets the available serialport names
         public string[] GetAvailablePortNames()
         {
             return SerialPort.GetPortNames();
         }
 
-        /// <summary>
-        /// Checks connection status
-        /// </summary>
-        /// <returns>True is connected, else false</returns>
+        //Checks if serialport is open
         public bool IsConnected()
         {
             return serialPort.IsOpen;
         }
 
-        /// <summary>
-        /// Sends the given message to the serial port.
-        /// </summary>
-        /// <param name="message">The message to send.</param>
-        /// <returns>true if the message was send, false otherwise.</returns>
+        //Code to send message to serial port of arduino
         public bool SendMessage(string message)
         {
             if (serialPort.IsOpen)
             {
-                //try
-                //{
                 serialPort.Write(messageBuilder.MessageBeginMarker + message + messageBuilder.MessageEndMarker);
                 return true;
-                //}
-                //catch (Exception exception) // Not very nice to catch Exception...but for now it's good enough.
-                //{
-                //   Debug.WriteLine("Could not write to serial port: " + exception.Message);
-                //}
             }
             return false;
         }
 
-        /// <summary>
-        /// Reads data from the serialport and extracts the mesages
-        /// </summary>
-        /// <returns>An array with messages, of null if no (complete) messages were received (yet)</returns>
+        //Code to read message in serialport of arduino
         public string[] ReadMessages()
         {
             if (serialPort.IsOpen
                 && serialPort.BytesToRead > 0)
             {
-                //try
-                //{
                 string data = serialPort.ReadExisting();
                 messageBuilder.Add(data);
 
@@ -147,28 +106,19 @@ namespace CocktailMachine.Class
                 if (messageCount > 0)
                 {
                     string[] messages = new string[messageCount];
-                    for (int i = 0; i < messageCount; i++) // not very fail safe programming... 
+                    for (int i = 0; i < messageCount; i++)
                     {
                         messages[i] = messageBuilder.GetNextMessage();
                     }
                     return messages;
                 }
-
-                //ProcessMessages();
-                //}
-                //catch (Exception exception) // Not very nice to catch Exception...but for now it's good enough.
-                //{
-                //    Debug.WriteLine("Could not read from serial port: " + exception.Message);
-                //}
             }
             return null;
         }
 
+        //Code for starting the connection with the arduino
         public void ConnectArduino()
         {
-            //MessageBuilder messageBuilder = new MessageBuilder('#', '%');
-            //arduinoConnection = new ArduinoConnection("COM10", 115200, messageBuilder);
-
             readMessageTimer = new DispatcherTimer();
             readMessageTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
             readMessageTimer.Tick += new EventHandler(ReadMessageTimer_Tick);
@@ -184,6 +134,7 @@ namespace CocktailMachine.Class
             }
         }
 
+        //Code for reading the message in the serialport
         private void ReadMessageTimer_Tick(object sender, EventArgs e)
         {
             string[] messages = ReadMessages();
@@ -196,6 +147,7 @@ namespace CocktailMachine.Class
             }
         }
 
+        //Code for checking what to do based on message
         private void processReceivedMessage(string message)
         {
             if (message == "ARDUINO_CONTROL")
