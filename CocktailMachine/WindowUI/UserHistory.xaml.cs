@@ -35,6 +35,7 @@ namespace CocktailMachine
             arduinoConnection = new ArduinoConnection("COM10", 9600, messageBuilder);
 
             tbHistorySearch.TextChanged += tbSearch_TextChanged;
+            btJSON.Click += btSaveJson_Clicked;
             arduinoConnection.ConnectArduino();
 
             addUserAccount.setPrivates(this);
@@ -46,6 +47,11 @@ namespace CocktailMachine
         private void tbSearch_TextChanged(object sender, RoutedEventArgs e)
         {
             getUserHistory.SearchHistory(dgUserHistory, tbHistorySearch);
+        }
+
+        private void btSaveJson_Clicked(object sender, RoutedEventArgs e)
+        {
+            getUserHistory.datagridToJson();
         }
 
         private void OpenAddUserAccount(object sender, RoutedEventArgs e)

@@ -24,9 +24,8 @@ namespace CocktailMachine.Class
             {
                 dtHistory.Clear();
                 conn.Open();
-                MySqlCommand command = new MySqlCommand(
-                    "SELECT User.Name AS Name, User.Age AS Age, History_user.Price, History_user.Date_Time AS Date, Cocktail.Name AS Cocktailname, Cocktail.Description AS Description FROM History_user INNER JOIN Cocktail ON (Cocktail.ID = History_user.ID) INNER JOIN User ON (User.ID = History_user.User_ID)",
-                    conn);
+                MySqlCommand command = new MySqlCommand("SELECT User.Name AS Name, User.Age AS Age, History_user.Price, History_user.Date_Time AS Date, Cocktail.Name AS Cocktailname, Cocktail.Description AS Description FROM History_user INNER JOIN Cocktail ON (Cocktail.ID = History_user.Cocktail_ID) INNER JOIN User ON (User.ID = History_user.User_ID) WHERE History_user.Date_Time = @now", conn);
+                command.Parameters.AddWithValue("@now", DateTime.Now.Date);
                 conn.Close();
                 planningadapter = new MySqlDataAdapter(command);
                 planningadapter.Fill(dtHistory);
