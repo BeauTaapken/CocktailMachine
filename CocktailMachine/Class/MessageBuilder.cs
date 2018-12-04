@@ -6,58 +6,22 @@ using System.Threading.Tasks;
 
 namespace CocktailMachine.Class
 {
-    /// <summary>
-    /// Class to extract messages from a text feed (like serial port).
-    /// 
-    /// Feed all data from the feed to the MessageBuilder by using the Add() method.
-    /// Use the GetMessage() method to retrieve the messages found in the feed.
-    /// </summary>
     public class MessageBuilder
     {
-        /// <summary>
-        /// Message from which more characters are to be expected from the feed.
-        /// </summary>
         private string partlyMessage;
-
-        /// <summary>
-        /// Buffer to store messages found in the feed.
-        /// Needed because its possible that multiple messages are parsed from the data input
-        /// </summary>
+        
         private Queue<string> messages;
-
-        /// <summary>
-        /// Marker that marks the start of a message.
-        /// </summary>
+        
         public char MessageBeginMarker { get; private set; }
-
-        /// <summary>
-        /// Marker that marks the mark the end of a message.
-        /// </summary>
+        
         public char MessageEndMarker { get; private set; }
-
-        /// <summary>
-        /// The number of available messages which can be retrieved using GetNextMessage()
-        /// </summary>
-        /// <returns></returns>
+        
         public int MessageCount
         {
-            get
-            {
-                return messages.Count;
-            }
+            get { return messages.Count; }
         }
 
-        /// <summary>
-        /// Create a MessageBuilder instance.
-        /// </summary>
-        /// <param name="messageBeginMarker">
-        /// Marker that is used to find the start of a message 
-        /// when trying to find messages in the buffered data.
-        /// </param>
-        /// <param name="messageEndMarker">
-        /// Marker that is used to find the end of a message 
-        /// when trying to find messages in the buffered data.
-        /// </param>
+        //Initializes the messageBuilder to be able to be used properly
         public MessageBuilder(char messageBeginMarker, char messageEndMarker)
         {
             MessageBeginMarker = messageBeginMarker;
@@ -66,15 +30,7 @@ namespace CocktailMachine.Class
             partlyMessage = null;
         }
 
-        /// <summary>
-        /// Feeds data containing (possible) messages to the MessageBuilder.
-        /// After using Add, use GetMessage() to retrieve messages contained in the data.
-        /// 
-        /// Its possible that an incomplete message is contained in the data.
-        /// </summary>
-        /// <param name="data">
-        /// data from the feed containing possible messages.
-        /// </param>
+        //Adds characters to the message
         public void Add(string data)
         {
             if (data == null)
@@ -126,16 +82,7 @@ namespace CocktailMachine.Class
             }
         }
 
-        /// <summary>
-        /// Gets the next message that was present in the MessageBuilder.
-        /// Use Add() to add data to the MessageBuilder from which messages should be extracted.
-        /// 
-        /// It's possible that multiple messages are present in the MessageBuilder. 
-        /// So call GetMessage() until it returns null after using Add().
-        /// </summary>
-        /// <returns>
-        /// The next message, or null if no message was present in the builder.
-        /// </returns>
+        //Gets the next message in the serial port
         public string GetNextMessage()
         {
             if (messages.Count > 0)
@@ -145,9 +92,7 @@ namespace CocktailMachine.Class
             return null;
         }
 
-        /// <summary>
-        /// Clear all buffered messages and message data
-        /// </summary>
+        //Clears the message
         public void Clear()
         {
             messages.Clear();
