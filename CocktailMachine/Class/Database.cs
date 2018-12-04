@@ -38,5 +38,27 @@ namespace CocktailMachine.Class
                 return dtHistory;
             }
         }
+        //upload user info & fingerprint
+        public DataTable uploadUserInfo(string username, DateTime userBirthday, string fingerprintCode)
+        {
+            try
+            {
+                dtHistory.Clear();
+                conn.Open();
+                MySqlCommand command = new MySqlCommand(
+                    "INSERT INTO `fingerprint`(``, `Age`) VALUES(username, '1999-06-05')", //query doesn't work yet
+                    conn);
+                conn.Close();
+                planningadapter = new MySqlDataAdapter();
+                planningadapter.Fill(dtHistory);
+
+                return dtHistory;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Something went wrong");
+                return dtHistory;
+            }
+        }
     }
 }
