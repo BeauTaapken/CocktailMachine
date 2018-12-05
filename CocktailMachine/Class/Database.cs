@@ -18,6 +18,7 @@ namespace CocktailMachine.Class
 
         MySqlConnection conn = new MySqlConnection("server=localhost;Database=riktomcom;UID=riktomcom;pwd=H2Ha%qeK");
 
+        //Gets the user history and returns it as a datatable
         public DataTable getUserHistory()
         {
             try
@@ -37,12 +38,12 @@ namespace CocktailMachine.Class
                 return dtHistory;
             }
         }
+
         //upload user info & fingerprint
-        public DataTable uploadUserInfo(string username, DateTime userBirthday, string fingerprintCode)
+        public void uploadUserInfo(string username, DateTime userBirthday, string fingerprintCode)
         {
             try
             {
-                dtHistory.Clear();
                 conn.Open();
                 MySqlCommand command = new MySqlCommand(
                     "INSERT INTO `fingerprints`(`Code`) VALUES(@fingerprintCode)",
@@ -57,15 +58,10 @@ namespace CocktailMachine.Class
                 insertUser.Parameters.AddWithValue("@name", username);
                 insertUser.Parameters.AddWithValue("@birthday", userBirthday);
                 conn.Close();
-                planningadapter = new MySqlDataAdapter(command);
-                planningadapter.Fill(dtHistory);
-
-                return dtHistory;
             }
             catch (MySqlException)
             {
                 MessageBox.Show("Something went wrong");
-                return dtHistory;
             }
         }
     }
