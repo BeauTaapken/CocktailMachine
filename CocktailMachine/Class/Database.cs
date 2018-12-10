@@ -18,7 +18,7 @@ namespace CocktailMachine.Class
         private MySqlDataAdapter planningadapter;
         private MySqlDataAdapter drinkNameAdapter;
 
-        MySqlConnection conn = new MySqlConnection("server=localhost;Database=riktomcom;UID=riktomcom;pwd=H2Ha%qeK");
+        MySqlConnection conn = new MySqlConnection("server=localhost;Database=cocktail;UID=root");
 
         //Gets the user history and returns it as a datatable
         public DataTable getUserHistory()
@@ -34,9 +34,9 @@ namespace CocktailMachine.Class
                 planningadapter.Fill(dtHistory);
                 return dtHistory;
             }
-            catch (MySqlException)
+            catch (MySqlException e)
             {
-                MessageBox.Show("Something went wrong");
+                MessageBox.Show(e.ToString());
                 return dtHistory;
             }
         }
@@ -63,7 +63,7 @@ namespace CocktailMachine.Class
             }
             catch (MySqlException)
             {
-                MessageBox.Show("Something went wrong");
+                MessageBox.Show("Upload User Info Error");
             }
         }
 
@@ -74,7 +74,7 @@ namespace CocktailMachine.Class
             {
                 allDrinkNames.Clear();
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT Cocktail.Name FROM Cocktail", conn);
+                MySqlCommand cmd = new MySqlCommand("SELECT Drinks.Name FROM Drinks", conn);
                 conn.Close();
                 drinkNameAdapter = new MySqlDataAdapter(cmd);
                 drinkNameAdapter.Fill(allDrinkNames);
@@ -82,7 +82,7 @@ namespace CocktailMachine.Class
             }
             catch (MySqlException)
             {
-                MessageBox.Show("Something went wrong");
+                MessageBox.Show("Get All Drinks Error");
                 return allDrinkNames;
             }
         }
