@@ -14,7 +14,9 @@ namespace CocktailMachine.Class
         //TODO make all database related functions here. also connection string(Everyone)
 
         private DataTable dtHistory = new DataTable();
+        private DataTable allDrinkNames = new DataTable();
         private MySqlDataAdapter planningadapter;
+        private MySqlDataAdapter drinkNameAdapter;
 
         MySqlConnection conn = new MySqlConnection("server=localhost;Database=riktomcom;UID=riktomcom;pwd=H2Ha%qeK");
 
@@ -62,6 +64,26 @@ namespace CocktailMachine.Class
             catch (MySqlException)
             {
                 MessageBox.Show("Something went wrong");
+            }
+        }
+
+        // All drink names in datatable
+        public DataTable GetAllDrinkNames()
+        {
+            try
+            {
+                allDrinkNames.Clear();
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT Cocktail.Name FROM Cocktail", conn);
+                conn.Close();
+                drinkNameAdapter = new MySqlDataAdapter(cmd);
+                drinkNameAdapter.Fill(allDrinkNames);
+                return allDrinkNames;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Something went wrong");
+                return allDrinkNames;
             }
         }
     }
