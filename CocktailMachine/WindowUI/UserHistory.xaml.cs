@@ -42,16 +42,17 @@ namespace CocktailMachine
             arduinoConnection.ConnectArduino();
 
             addUserAccount.setPrivates(this);
+            getUserHistory.setPrivates(dgUserHistory, tbHistorySearch);
+
             btAddUser.Click += OpenAddUserAccount;
 
-            getUserHistory.FillUserHistory(dgUserHistory);
-
+            getUserHistory.FillUserHistory();
             setupArduino.SendAllCocktailNamesToArduino();
         }
 
         private void tbSearch_TextChanged(object sender, RoutedEventArgs e)
         {
-            getUserHistory.SearchHistory(dgUserHistory, tbHistorySearch);
+            getUserHistory.SearchHistory();
         }
 
         private void btSaveJson_Clicked(object sender, RoutedEventArgs e)
