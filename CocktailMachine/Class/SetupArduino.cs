@@ -21,24 +21,10 @@ namespace CocktailMachine.Class
             arduinoConnection = arduinoconnection;
         }
 
-        // Convert DataTable to String, seperated with ";" after every row
-        public string DtToSeperatedString(DataTable dt)
+        // Makes a string from a List<string>, seperated by ";"
+        public string ListToSeperatedString(List<string> list)
         {
-            int i = 0;
-            string str = "";
-            while (i < dt.Rows.Count)
-            {
-                if (i < (dt.Rows.Count - 1))
-                {
-                    str += dt.Rows[i][0].ToString() + ";";
-                }
-                else
-                {
-                    str += dt.Rows[i][0].ToString();
-                }
-                i++;
-            }
-            return str;
+            return string.Join(";", list);
         }
 
         // Contains all drink names in a string with correct format for Arduino and sends it to Arduino, checks if arduino is connected and checks if message is sent
@@ -46,11 +32,11 @@ namespace CocktailMachine.Class
         {
             if(arduinoConnection.IsConnected())
             {
-                DataTable allCocktails = db.GetAllCocktailNames();
-                string message = DtToSeperatedString(allCocktails);
+                List<string> allCocktails = db.GetAllCocktailNamesList();
+                string message = ListToSeperatedString(allCocktails);
                 if (arduinoConnection.SendMessage(message))
                 {
-
+                    
                 }
                 else
                 {
