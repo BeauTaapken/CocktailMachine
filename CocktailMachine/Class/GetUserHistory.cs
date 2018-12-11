@@ -78,6 +78,7 @@ namespace CocktailMachine.Class
             string output = JsonConvert.SerializeObject(dtHistory);
             string path = AppDomain.CurrentDomain.BaseDirectory + "/User_History_" + DateTime.Now.Year + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + ".json";
             File.WriteAllText(path, output);
+            MessageBox.Show("Json file has been created.");
         }
     }
 }
