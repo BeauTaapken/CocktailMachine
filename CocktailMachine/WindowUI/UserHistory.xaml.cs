@@ -26,6 +26,7 @@ namespace CocktailMachine
         private AddUserAccount addUserAccount = new AddUserAccount();
         private ArduinoConnection arduinoConnection;
         private GetUserHistory getUserHistory = new GetUserHistory();
+        private SetupArduino setupArduino = new SetupArduino();
 
         public UserHistory()
         {
@@ -33,6 +34,8 @@ namespace CocktailMachine
 
             MessageBuilder messageBuilder = new MessageBuilder('#', '%');
             arduinoConnection = new ArduinoConnection("COM10", 9600, messageBuilder);
+
+            setupArduino.setPrivate(arduinoConnection);
 
             tbHistorySearch.TextChanged += tbSearch_TextChanged;
             btJSON.Click += btSaveJson_Clicked;

@@ -13,6 +13,13 @@ namespace CocktailMachine.Class
     {
         //TODO make funcion to get all drinks from the database(make in database class) and send them to the arduino, Made by Jeremy
         private Database db = new Database();
+        private ArduinoConnection arduinoConnection;
+
+        // Sets ArduinoConnection as UserHistory.xaml.cs initializes
+        public void setPrivate(ArduinoConnection arduinoconnection)
+        {
+            arduinoConnection = arduinoconnection;
+        }
 
         // Convert DataTable to String, seperated with "." after every row
         public string DtToSeperatedString(DataTable dt)
