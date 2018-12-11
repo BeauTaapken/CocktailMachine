@@ -11,7 +11,7 @@ namespace CocktailMachine.Class
 {
     class SetupArduino
     {
-        //TODO make funcion to get all drinks from the database(make in database class) and send them to the arduino, Made by Jeremy
+        //TODO make funcion to get all cocktails from the database(make in database class) and send them to the arduino, Made by Jeremy
         private Database db = new Database();
         private ArduinoConnection arduinoConnection;
 
@@ -21,7 +21,7 @@ namespace CocktailMachine.Class
             arduinoConnection = arduinoconnection;
         }
 
-        // Convert DataTable to String, seperated with "." after every row
+        // Convert DataTable to String, seperated with ";" after every row
         public string DtToSeperatedString(DataTable dt)
         {
             int i = 0;
@@ -30,7 +30,7 @@ namespace CocktailMachine.Class
             {
                 if (i < (dt.Rows.Count - 1))
                 {
-                    str += dt.Rows[i][0].ToString() + ".";
+                    str += dt.Rows[i][0].ToString() + ";";
                 }
                 else
                 {
@@ -41,12 +41,26 @@ namespace CocktailMachine.Class
             return str;
         }
 
-        // Contains all drink names in a string with correct format for Arduino (can't SendMessage() because ArduinoConnection wants port and baudrate)
-        public string AllDrinkNamesMessage()
+        // Contains all drink names in a string with correct format for Arduino and sends it to Arduino, checks if arduino is connected and checks if message is sent
+        public void SendAllCocktailNamesToArduino()
         {
-            DataTable allDrinks = db.GetAllDrinkNames();
-            string message = DtToSeperatedString(allDrinks);
-            return message;
+            if(arduinoConnection.IsConnected())
+            {
+                DataTable allCocktails = db.GetAllCocktailNames();
+                string message = DtToSeperatedString(allCocktails);
+                if (arduinoConnection.SendMessage(message))
+                {
+
+                }
+                else
+                {
+                    MessageBox.Show("Error sending message to arduino");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Arduino not connected");
+            }
         }
     }
 }

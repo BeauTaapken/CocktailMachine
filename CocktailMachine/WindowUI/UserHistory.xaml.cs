@@ -33,7 +33,7 @@ namespace CocktailMachine
             InitializeComponent();
 
             MessageBuilder messageBuilder = new MessageBuilder('#', '%');
-            arduinoConnection = new ArduinoConnection("COM10", 9600, messageBuilder);
+            arduinoConnection = new ArduinoConnection("COM8", 9600, messageBuilder);
 
             setupArduino.setPrivate(arduinoConnection);
 
@@ -45,6 +45,8 @@ namespace CocktailMachine
             btAddUser.Click += OpenAddUserAccount;
 
             getUserHistory.FillUserHistory(dgUserHistory);
+
+            setupArduino.SendAllCocktailNamesToArduino();
         }
 
         private void tbSearch_TextChanged(object sender, RoutedEventArgs e)
