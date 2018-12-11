@@ -15,8 +15,10 @@ namespace CocktailMachine.Class
 
         private DataTable dtHistory = new DataTable();
         private DataTable allDrinkNames = new DataTable();
+        private DataTable allCocktailNames = new DataTable();
         private MySqlDataAdapter planningadapter;
         private MySqlDataAdapter drinkNameAdapter;
+        private MySqlDataAdapter cocktailNameAdapter;
 
         MySqlConnection conn = new MySqlConnection("server=localhost;Database=cocktail;UID=root;pwd=");
 
@@ -74,7 +76,7 @@ namespace CocktailMachine.Class
             {
                 allDrinkNames.Clear();
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT Drinks.Name FROM Drinks", conn);
+                MySqlCommand cmd = new MySqlCommand("SELECT drink.Name FROM drink", conn);
                 conn.Close();
                 drinkNameAdapter = new MySqlDataAdapter(cmd);
                 drinkNameAdapter.Fill(allDrinkNames);
@@ -84,6 +86,26 @@ namespace CocktailMachine.Class
             {
                 MessageBox.Show("Get All Drinks Error");
                 return allDrinkNames;
+            }
+        }
+
+        // All cocktail names in datatable
+        public DataTable GetAllCocktailNames()
+        {
+            try
+            {
+                allCocktailNames.Clear();
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT cocktail.Name FROM cocktail", conn);
+                conn.Close();
+                cocktailNameAdapter = new MySqlDataAdapter(cmd);
+                cocktailNameAdapter.Fill(allCocktailNames);
+                return allCocktailNames;
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Get All Cocktails Error");
+                return allCocktailNames;
             }
         }
     }
