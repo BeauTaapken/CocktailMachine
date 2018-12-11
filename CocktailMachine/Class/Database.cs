@@ -49,6 +49,12 @@ namespace CocktailMachine.Class
             try
             {
                 conn.Open();
+                MySqlCommand insertUser = new MySqlCommand(
+                    "INSERT INTO `user`(`Name`, `Age`) VALUES (@name, @birthday)",
+                    conn);
+                MySqlCommand selectUserID = new MySqlCommand(
+                    "SELECT ID FROM user", 
+                    conn);
                 MySqlCommand command = new MySqlCommand(
                     "INSERT INTO `fingerprints`(`Code`) VALUES(@fingerprintCode)",
                     conn);
@@ -56,9 +62,7 @@ namespace CocktailMachine.Class
                 MySqlCommand selectFingerprint = new MySqlCommand(
                     "SELECT Code, fingerprints.ID FROM fingerprints" ,
                     conn);
-                MySqlCommand insertUser = new MySqlCommand(
-                    "INSERT INTO `user`(`Name`, `Age`) VALUES (@name, @birthday)",
-                    conn);
+
                 insertUser.Parameters.AddWithValue("@name", username);
                 insertUser.Parameters.AddWithValue("@birthday", userBirthday);
                 conn.Close();

@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Windows;
 
 namespace CocktailMachine.Class
 {
     class User
     {
         private ArduinoConnection arduinoConnection;
+
+        private bool receivedPrint = false;
         public User(ArduinoConnection arduinoConnection)
         {
             this.arduinoConnection = arduinoConnection;
@@ -21,17 +24,25 @@ namespace CocktailMachine.Class
 
         //}
 
+        public void ReceiveMessage()
+        {
+            receivedPrint = true;
+        }
+
         public string getFingerprint()
         {
             arduinoConnection.SendMessage("test");
             Stopwatch s = new Stopwatch();
             s.Start();
-            while (s.Elapsed < TimeSpan.FromSeconds(600))
+            while (s.Elapsed < TimeSpan.FromSeconds(10) && receivedPrint == false)
             {
-                
+                if (arduinoConnection.MessageReceived)
+                {
+                    receivedPrint = true;
+                }
             }
-
             s.Stop();
+
             //Check for fingerprint scanner data
             return "";
         }

@@ -17,7 +17,9 @@ namespace CocktailMachine.Class
         private MessageBuilder messageBuilder;
 
         private DispatcherTimer readMessageTimer;
-        
+
+        private bool messageReceived = false;
+
         public int BaudRate { get { return serialPort.BaudRate; } }
 
         public string PortName { get { return serialPort.PortName; } }
@@ -153,12 +155,24 @@ namespace CocktailMachine.Class
         {
             if (Regex.IsMatch(message, @"^\d+$"))
             {
-                
-                MessageBox.Show("all numbers");
+                MessageReceived = true;
             }
             if (message == "ARDUINO_CONTROL")
             {
                 MessageBox.Show("Arduino control");
+            }
+        }
+
+        public bool MessageReceived
+        {
+            
+            get
+            {
+                return messageReceived;
+            }
+            set
+            {
+                messageReceived = value;
             }
         }
     }
