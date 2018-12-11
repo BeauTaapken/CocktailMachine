@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CocktailMachine.Class;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,10 +21,17 @@ namespace CocktailMachine.Window
     public partial class AddUserAccount
     {
         private UserHistory userHistory;
+        User user = new User();
         public AddUserAccount()
         {
             InitializeComponent();
             btUserHistory.Click += OpenUserHistory;
+            btAskForFingerprint.Click += test;
+        }
+
+        private void test(object sender, RoutedEventArgs e)
+        {
+            user.getFingerprint();
         }
 
         public void OpenUserHistory(object sender, RoutedEventArgs e)

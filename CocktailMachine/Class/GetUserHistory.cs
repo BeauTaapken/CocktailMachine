@@ -17,9 +17,17 @@ namespace CocktailMachine.Class
         private Database db = new Database();
         private DataTable dtHistory = new DataTable();
         private DataTable dtSearch = new DataTable();
+        private DataGrid dgHistory;
+        private TextBox tbSearch;
+
+        public void setPrivates(DataGrid dghistory, TextBox tbsearch)
+        {
+            dgHistory = dghistory;
+            tbSearch = tbsearch;
+        }
 
         //Code for filling the datagrid on the userhistory screen
-        public void FillUserHistory(DataGrid dgHistory)
+        public void FillUserHistory()
         {
             dtHistory.Clear();
             dtHistory = db.getUserHistory();
@@ -29,8 +37,9 @@ namespace CocktailMachine.Class
                 dgHistory.ItemsSource = dtHistory.DefaultView;
             }
         }
-
-        public void SearchHistory(DataGrid dgHistory, TextBox tbSearch)
+        
+        //Function for searching through the userhistory datagrid
+        public void SearchHistory()
         {
             string searchValue = tbSearch.Text;
             if (searchValue != String.Empty && dgHistory.ItemsSource is DataView)
@@ -63,6 +72,7 @@ namespace CocktailMachine.Class
             }
         }
 
+        //Function for saving the datagrid information to a json file.
         public void datagridToJson()
         {
             string output = JsonConvert.SerializeObject(dtHistory);
