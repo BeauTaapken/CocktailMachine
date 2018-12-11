@@ -15,10 +15,9 @@ namespace CocktailMachine.Class
 
         private DataTable dtHistory = new DataTable();
         private DataTable allDrinkNames = new DataTable();
-        private DataTable allCocktailNames = new DataTable();
+        List<String> allCocktailNamesList = new List<String>();
         private MySqlDataAdapter planningadapter;
         private MySqlDataAdapter drinkNameAdapter;
-        private MySqlDataAdapter cocktailNameAdapter;
 
         MySqlConnection conn = new MySqlConnection("server=localhost;Database=cocktail;UID=root;pwd=");
 
@@ -89,23 +88,27 @@ namespace CocktailMachine.Class
             }
         }
 
-        // All cocktail names in datatable
-        public DataTable GetAllCocktailNames()
+        // Gets all cocktail names in a List<string>
+        public List<string> GetAllCocktailNamesList()
         {
             try
             {
-                allCocktailNames.Clear();
+                allCocktailNamesList.Clear();
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT cocktail.Name FROM cocktail", conn);
+                MySqlCommand command = new MySqlCommand("SELECT cocktail.Name FROM cocktail", conn);
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    allCocktailNamesList.Add(reader.GetString(0));
+                }
                 conn.Close();
-                cocktailNameAdapter = new MySqlDataAdapter(cmd);
-                cocktailNameAdapter.Fill(allCocktailNames);
-                return allCocktailNames;
+                return allCocktailNamesList;
             }
             catch (MySqlException)
             {
                 MessageBox.Show("Get All Cocktails Error");
-                return allCocktailNames;
+                conn.Close();
+                return null;
             }
         }
     }
