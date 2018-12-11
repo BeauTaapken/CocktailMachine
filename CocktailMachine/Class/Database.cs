@@ -15,7 +15,7 @@ namespace CocktailMachine.Class
 
         private DataTable dtHistory = new DataTable();
         private DataTable allDrinkNames = new DataTable();
-        List<String> allCocktailNamesList = new List<String>();
+        List<string> allCocktailNamesList = new List<string>();
         private MySqlDataAdapter planningadapter;
         private MySqlDataAdapter drinkNameAdapter;
 
