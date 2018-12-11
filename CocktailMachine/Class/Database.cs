@@ -18,7 +18,7 @@ namespace CocktailMachine.Class
         private MySqlDataAdapter planningadapter;
         private MySqlDataAdapter drinkNameAdapter;
 
-        MySqlConnection conn = new MySqlConnection("server=localhost;Database=cocktail;UID=root");
+        MySqlConnection conn = new MySqlConnection("server=localhost;Database=cocktail;UID=root;pwd=");
 
         //Gets the user history and returns it as a datatable
         public DataTable getUserHistory()
@@ -36,7 +36,7 @@ namespace CocktailMachine.Class
             }
             catch (MySqlException e)
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show("Something went wront with getting the data for the userhistory");
                 return dtHistory;
             }
         }

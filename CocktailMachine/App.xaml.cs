@@ -17,9 +17,7 @@ namespace CocktailMachine
     {
         public App()
         {
-            MessageBuilder messageBuilder = new MessageBuilder('#', '%');
-            Drinks drinks = new Drinks();
-            messageBuilder.Add(drinks.ArduinoDrinksString());
+
         }
     }
 }
