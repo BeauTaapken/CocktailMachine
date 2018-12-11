@@ -27,6 +27,7 @@ namespace CocktailMachine
         private ArduinoConnection arduinoConnection;
         private GetUserHistory getUserHistory = new GetUserHistory();
         private SetupArduino setupArduino = new SetupArduino();
+        private User User;
 
         public UserHistory()
         {
@@ -34,6 +35,8 @@ namespace CocktailMachine
 
             MessageBuilder messageBuilder = new MessageBuilder('#', '%');
             arduinoConnection = new ArduinoConnection("COM8", 9600, messageBuilder);
+
+            User = new User(arduinoConnection);
 
             setupArduino.setPrivate(arduinoConnection);
 
@@ -62,8 +65,14 @@ namespace CocktailMachine
 
         private void OpenAddUserAccount(object sender, RoutedEventArgs e)
         {
+            User = new User(arduinoConnection);
             addUserAccount.Show();
             this.Hide();
+        }
+
+        public void UserFingerprint()
+        {
+            User.getFingerprint();
         }
 
         protected override void OnClosed(EventArgs e)

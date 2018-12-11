@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using System.Text.RegularExpressions;
 
 namespace CocktailMachine.Class
 {
@@ -150,9 +151,14 @@ namespace CocktailMachine.Class
         //Code for checking what to do based on message
         private void processReceivedMessage(string message)
         {
+            if (Regex.IsMatch(message, @"^\d+$"))
+            {
+                
+                MessageBox.Show("all numbers");
+            }
             if (message == "ARDUINO_CONTROL")
             {
-                MessageBox.Show("Arduino is in control");
+                MessageBox.Show("Arduino control");
             }
         }
     }

@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace CocktailMachine.Class
 {
     class User
     {
-        //Doesn't work
-        //private ArduinoConnection arduinoConnection;
-
-        //TODO make function to add user to database and function to wait until the fingerprint scanner has been used and a value has been sent back. Made by Mark
+        private ArduinoConnection arduinoConnection;
+        public User(ArduinoConnection arduinoConnection)
+        {
+            this.arduinoConnection = arduinoConnection;
+        }
         private Database DB = new Database();
-
-
         //private void setPrivate(ArduinoConnection test)
         //{
         //    arduinoConnection = test;
@@ -23,7 +23,15 @@ namespace CocktailMachine.Class
 
         public string getFingerprint()
         {
-            //arduinoConnection.SendMessage("test");
+            arduinoConnection.SendMessage("test");
+            Stopwatch s = new Stopwatch();
+            s.Start();
+            while (s.Elapsed < TimeSpan.FromSeconds(600))
+            {
+                
+            }
+
+            s.Stop();
             //Check for fingerprint scanner data
             return "";
         }

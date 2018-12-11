@@ -21,7 +21,9 @@ namespace CocktailMachine.Window
     public partial class AddUserAccount
     {
         private UserHistory userHistory;
-        User user = new User();
+
+
+
         public AddUserAccount()
         {
             InitializeComponent();
@@ -31,7 +33,7 @@ namespace CocktailMachine.Window
 
         private void test(object sender, RoutedEventArgs e)
         {
-            user.getFingerprint();
+            userHistory.UserFingerprint();
         }
 
         public void OpenUserHistory(object sender, RoutedEventArgs e)
