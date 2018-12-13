@@ -16,20 +16,27 @@ namespace CocktailMachine.Class
         // TODO get drinks from database(make function in database class) and return them to the arduino based on string gotten from the Arduino(can be tested with a hardcoded string), Made by Rik
 
         private Database db = new Database();
-        private DataTable dtDrinks = new DataTable();
-        private string drinks = "";
+        private ArduinoConnection arduinoConnection;
+        private int fingerprint;
 
+        public void setPrivates(ArduinoConnection arduinoconnection)
+        {
+            arduinoConnection = arduinoconnection;
+        }
 
         //Code for filling the datagrid on the userhistory screen
-        public string ArduinoDrinksString()
+        public void ArduinoDrinksStringForCocktail(string message)
         {
-            dtDrinks.Clear();
-            dtDrinks = db.GetAllDrinkNames();
-            foreach(DataRow row in dtDrinks.Rows)
+            List<string> amountDrinks = db.GetAllDrinkNamesWhereCocktailID(1);
+            db.InsertIntoUserHistory(Convert.ToInt32(message.Split(';')[0]), message.Split(';')[1]);
+            if (arduinoConnection.SendMessage(string.Join(";", amountDrinks)))
             {
-                drinks = drinks + row["name"].ToString() + ",";
+
             }
-            return drinks;
+            else
+            {
+                MessageBox.Show("Error sending message to arduino");
+            }
         }
     }
 }

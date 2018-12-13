@@ -28,6 +28,7 @@ namespace CocktailMachine
         private GetUserHistory getUserHistory = new GetUserHistory();
         private SetupArduino setupArduino = new SetupArduino();
         private User User;
+        private Drinks drinks = new Drinks();
 
         public UserHistory()
         {
@@ -39,13 +40,13 @@ namespace CocktailMachine
             User = new User(arduinoConnection);
 
             setupArduino.setPrivate(arduinoConnection);
+            addUserAccount.setPrivates(this);
+            getUserHistory.setPrivates(dgUserHistory, tbHistorySearch);
+            drinks.setPrivates(arduinoConnection);
 
             tbHistorySearch.TextChanged += tbSearch_TextChanged;
             btJSON.Click += btSaveJson_Clicked;
             arduinoConnection.ConnectArduino();
-
-            addUserAccount.setPrivates(this);
-            getUserHistory.setPrivates(dgUserHistory, tbHistorySearch);
 
             btAddUser.Click += OpenAddUserAccount;
 

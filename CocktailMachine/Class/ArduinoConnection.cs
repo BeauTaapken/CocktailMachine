@@ -18,6 +18,8 @@ namespace CocktailMachine.Class
 
         private DispatcherTimer readMessageTimer;
 
+        private Drinks drinks = new Drinks();
+
         private bool messageReceived = false;
 
         public int BaudRate { get { return serialPort.BaudRate; } }
@@ -157,9 +159,9 @@ namespace CocktailMachine.Class
             {
                 MessageReceived = true;
             }
-            if (message == "ARDUINO_CONTROL")
+            else if (message != String.Empty)
             {
-                MessageBox.Show("Arduino control");
+                drinks.ArduinoDrinksStringForCocktail(message);
             }
         }
 
