@@ -35,14 +35,14 @@ namespace CocktailMachine
             InitializeComponent();
 
             MessageBuilder messageBuilder = new MessageBuilder('#', '%');
-            arduinoConnection = new ArduinoConnection("COM8", 9600, messageBuilder);
+            arduinoConnection = new ArduinoConnection("COM10", 9600, messageBuilder);
 
             User = new User(arduinoConnection);
 
             setupArduino.setPrivate(arduinoConnection);
             addUserAccount.setPrivates(this);
             getUserHistory.setPrivates(dgUserHistory, tbHistorySearch);
-            drinks.setPrivates(arduinoConnection);
+            drinks.setPrivates(arduinoConnection, getUserHistory);
 
             tbHistorySearch.TextChanged += tbSearch_TextChanged;
             btJSON.Click += btSaveJson_Clicked;

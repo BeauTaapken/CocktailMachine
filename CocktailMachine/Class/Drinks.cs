@@ -18,20 +18,22 @@ namespace CocktailMachine.Class
         private Database db = new Database();
         private ArduinoConnection arduinoConnection;
         private int fingerprint;
+        private GetUserHistory getUserHistory;
 
-        public void setPrivates(ArduinoConnection arduinoconnection)
+        public void setPrivates(ArduinoConnection arduinoconnection, GetUserHistory getuserhistory)
         {
             arduinoConnection = arduinoconnection;
+            getUserHistory = getuserhistory;
         }
 
         //Code for filling the datagrid on the userhistory screen
         public void ArduinoDrinksStringForCocktail(string message)
         {
             List<string> amountDrinks = db.GetAllDrinkNamesWhereCocktailID(1);
-            db.InsertIntoUserHistory(Convert.ToInt32(message.Split(';')[0]), message.Split(';')[1]);
             if (arduinoConnection.SendMessage(string.Join(";", amountDrinks)))
             {
-
+                db.InsertIntoUserHistory(Convert.ToInt32(message.Split(';')[0]), message.Split(';')[1]);
+                getUserHistory.FillUserHistory();
             }
             else
             {
