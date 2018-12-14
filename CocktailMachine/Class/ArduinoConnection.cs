@@ -155,13 +155,13 @@ namespace CocktailMachine.Class
         //Code for checking what to do based on message
         private void processReceivedMessage(string message)
         {
-            if (Regex.IsMatch(message, @"^\d+$"))
+            if (message.StartsWith("FingerID:"))
             {
                 MessageReceived = true;
             }
-            else if (message != String.Empty)
+            else if (message.StartsWith("Cocktail:"))
             {
-                drinks.ArduinoDrinksStringForCocktail(message);
+                drinks.ArduinoDrinksStringForCocktail(message.Replace("Cocktail:", ""));
             }
         }
 
