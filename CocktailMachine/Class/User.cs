@@ -31,7 +31,7 @@ namespace CocktailMachine.Class
 
         public string getFingerprint()
         {
-            arduinoConnection.SendMessage("test");
+            arduinoConnection.SendMessage("fingerprint");
             Stopwatch s = new Stopwatch();
             s.Start();
             while (s.Elapsed < TimeSpan.FromSeconds(10) && receivedPrint == false)
