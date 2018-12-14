@@ -30,7 +30,7 @@ namespace CocktailMachine.Class
         public void ArduinoDrinksStringForCocktail(string message)
         {
             List<string> amountDrinks = db.GetAllDrinkNamesWhereCocktailID(1);
-            if (arduinoConnection.SendMessage(string.Join(";", amountDrinks)))
+            if (arduinoConnection.SendMessage("AmountDrinks:" + string.Join(";", amountDrinks)))
             {
                 db.InsertIntoUserHistory(Convert.ToInt32(message.Split(';')[0]), message.Split(';')[1]);
                 getUserHistory.FillUserHistory();

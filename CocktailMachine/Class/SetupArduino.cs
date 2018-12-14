@@ -24,7 +24,7 @@ namespace CocktailMachine.Class
         // Makes a string from a List<string>, seperated by ";"
         public string ListToSeperatedString(List<string> list)
         {
-            return string.Join(";", list);
+            return "AllCocktails:" + string.Join(";", list);
         }
 
         // Contains all drink names in a string with correct format for Arduino and sends it to Arduino, checks if arduino is connected and checks if message is sent
