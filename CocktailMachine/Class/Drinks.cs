@@ -29,16 +29,30 @@ namespace CocktailMachine.Class
         //Code for filling the datagrid on the userhistory screen
         public void ArduinoDrinksStringForCocktail(string message)
         {
-            List<string> amountDrinks = db.GetAllDrinkNamesWhereCocktailID(1);
-            if (arduinoConnection.SendMessage("AmountDrinks:" + string.Join(";", amountDrinks)))
+            int fingerprint = Convert.ToInt32(message.Split(';')[0]);
+            int cocktailID = getCocktailID(message.Split(';')[1]);
+            if (db.oldEnoughForCocktail(fingerprint, cocktailID))
             {
-                db.InsertIntoUserHistory(Convert.ToInt32(message.Split(';')[0]), message.Split(';')[1]);
-                getUserHistory.FillUserHistory();
+                List<string> amountDrinks = db.GetAllDrinkNamesWhereCocktailID(cocktailID);
+                if (arduinoConnection.SendMessage("AmountDrinks:" + string.Join(";", amountDrinks)))
+                {
+                    db.InsertIntoUserHistory(fingerprint, message.Split(';')[1]);
+                    getUserHistory.FillUserHistory();
+                }
+                else
+                {
+                    MessageBox.Show("Error sending message to arduino");
+                }
             }
             else
             {
-                MessageBox.Show("Error sending message to arduino");
+                arduinoConnection.SendMessage("TooYoung");
             }
+        }
+
+        private int getCocktailID(string cocktail)
+        {
+            return db.getCocktailID(cocktail);
         }
     }
 }

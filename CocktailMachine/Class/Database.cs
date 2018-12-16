@@ -24,6 +24,9 @@ namespace CocktailMachine.Class
         private int userID;
         private int cocktailID;
         private double price;
+        private int cocktail;
+        private DateTime dtAge;
+        private int cocktailAge;
 
         MySqlConnection conn = new MySqlConnection("server=localhost;Database=cocktail;UID=root;pwd=");
 
@@ -78,6 +81,42 @@ namespace CocktailMachine.Class
             }
         }
 
+        // Checks if person is old enough to drink the selected cocktail
+        public bool oldEnoughForCocktail(int userid, int cocktailid)
+        {
+            try
+            {
+                conn.Open();
+                MySqlCommand cmdGetUserAge = new MySqlCommand("SELECT DATE(user.Age) FROM user INNER JOIN fingerprints ON (fingerprints.User_ID = user.ID) WHERE fingerprints.Code = @userid", conn);
+                cmdGetUserAge.Parameters.AddWithValue("@userid", userid);
+                MySqlDataReader drUserAge = cmdGetUserAge.ExecuteReader();
+                while (drUserAge.Read())
+                {
+                    dtAge = Convert.ToDateTime(drUserAge[0]).Date;
+                }
+                conn.Close();
+                conn.Open();
+                MySqlCommand cmdGetCocktailAge = new MySqlCommand("SELECT Age FROM cocktail WHERE ID = @cocktailid", conn);
+                cmdGetCocktailAge.Parameters.AddWithValue("@cocktailid", cocktailid);
+                MySqlDataReader drCocktailAge = cmdGetCocktailAge.ExecuteReader();
+                while (drCocktailAge.Read())
+                {
+                    cocktailAge = Convert.ToInt32(drCocktailAge[0]);
+                }
+                conn.Close();
+                if (DateTime.Now.Year - dtAge.Year - 1 >= cocktailAge || DateTime.Now.Year - dtAge.Year == cocktailAge && DateTime.Now.Month >= dtAge.Month && DateTime.Now.Day >= dtAge.Day)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Couldn't check if person is old enought to drink the cocktail");
+                return false;
+            }
+        }
+
         // All drink names in datatable
         public List<string> GetAllDrinkNamesWhereCocktailID(int ID)
         {
@@ -85,7 +124,7 @@ namespace CocktailMachine.Class
             {
                 drinksForCocktail.Clear();
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT cocktail_drink.Drink_Dose, drink.Name FROM cocktail_drink INNER JOIN drink ON(drink.ID = cocktail_drink.Drink_ID) AND cocktail_drink.Cocktail_ID = @ID", conn);
+                MySqlCommand cmd = new MySqlCommand("SELECT cocktail_drink.Drink_Dose, drink.Name FROM cocktail_drink INNER JOIN drink ON(drink.ID = cocktail_drink.Drink_ID) WHERE cocktail_drink.Cocktail_ID = @ID", conn);
                 cmd.Parameters.AddWithValue("@ID", ID);
                 MySqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
@@ -99,6 +138,29 @@ namespace CocktailMachine.Class
             {
                 MessageBox.Show("Get All Drinks Error");
                 return drinksForCocktail;
+            }
+        }
+
+        // Gets cocktailid based on selected cocktail
+        public int getCocktailID(string cocktail)
+        {
+            try
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT ID FROM `cocktail` WHERE Name = @cocktailname", conn);
+                cmd.Parameters.AddWithValue("@cocktailname", cocktail);
+                MySqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    cocktailID = Convert.ToInt32(dr[0]);
+                }
+                conn.Close();
+                return cocktailID;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Couldn't get id of selected cocktail");
+                return 0;
             }
         }
 
@@ -146,13 +208,12 @@ namespace CocktailMachine.Class
                 conn.Close();
                 conn.Open();
                 MySqlCommand cmdSelectCocktailInfo =
-                    new MySqlCommand("SELECT ID, Price FROM cocktail WHERE Name = @cocktailname", conn);
+                    new MySqlCommand("SELECT Price FROM cocktail WHERE Name = @cocktailname", conn);
                 cmdSelectCocktailInfo.Parameters.AddWithValue("@cocktailname", cocktailName);
                 MySqlDataReader drCocktailInfo = cmdSelectCocktailInfo.ExecuteReader();
                 while (drCocktailInfo.Read())
                 {
-                    cocktailID = Convert.ToInt32(drCocktailInfo[0]);
-                    price = Convert.ToDouble(drCocktailInfo[1]);
+                    price = Convert.ToDouble(drCocktailInfo[0]);
                 }
 
                 conn.Close();
