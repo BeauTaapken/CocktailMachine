@@ -7,27 +7,39 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using System.Text.RegularExpressions;
+using CocktailMachine.Window;
 
 namespace CocktailMachine.Class
 {
-    class ArduinoConnection
+    public class ArduinoConnection
     {
         private SerialPort serialPort;
-
         private MessageBuilder messageBuilder;
-
         private DispatcherTimer readMessageTimer;
-
         private Drinks drinks = new Drinks();
+        private AddUserAccount addUserAccount;
+        private Database db;
+        private bool messageReceived;
 
-        private bool messageReceived = false;
+        public bool MessageReceived
+        {
 
-        public int BaudRate { get { return serialPort.BaudRate; } }
+            get
+            {
+                return messageReceived;
+            }
+            set
+            {
+                messageReceived = value;
+            }
+        }
 
-        public string PortName { get { return serialPort.PortName; } }
-        
+        //public int BaudRate { get { return serialPort.BaudRate; } }
+
+        //public string PortName { get { return serialPort.PortName; } }
+
         //Initializes the arduino to be able to connect properly
-        public ArduinoConnection(string portName, int baudRate, MessageBuilder messageBuilder)
+        public ArduinoConnection(string portName, int baudRate, MessageBuilder messageBuilder, AddUserAccount adduseraccount)
         {
             if (portName == null)
             {
@@ -50,6 +62,7 @@ namespace CocktailMachine.Class
             serialPort.PortName = portName;
 
             this.messageBuilder = messageBuilder;
+            addUserAccount = adduseraccount;
         }
         
         //Connects to the arduino and the serial port
@@ -158,6 +171,7 @@ namespace CocktailMachine.Class
             if (message.StartsWith("FingerID:"))
             {
                 MessageReceived = true;
+                addUserAccount.iudFingerprint.Text = message.Replace("FingerID:", "");
             }
             else if (message.StartsWith("Cocktail:"))
             {
@@ -165,17 +179,6 @@ namespace CocktailMachine.Class
             }
         }
 
-        public bool MessageReceived
-        {
-            
-            get
-            {
-                return messageReceived;
-            }
-            set
-            {
-                messageReceived = value;
-            }
-        }
+        
     }
 }

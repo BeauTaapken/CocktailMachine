@@ -19,6 +19,7 @@ namespace CocktailMachine.Class
         private DataTable dtSearch = new DataTable();
         private DataGrid dgHistory;
         private TextBox tbSearch;
+        private int totalPrice;
 
         public void setPrivates(DataGrid dghistory, TextBox tbsearch)
         {
@@ -42,6 +43,7 @@ namespace CocktailMachine.Class
         public void SearchHistory()
         {
             string searchValue = tbSearch.Text;
+            totalPrice = 0;
             if (searchValue != String.Empty && dgHistory.ItemsSource is DataView)
             {
                 dtSearch.Rows.Clear();
@@ -54,11 +56,11 @@ namespace CocktailMachine.Class
                 dtSearch.Columns.Add("Description", typeof(String));
                 foreach (DataRowView drvRow in (DataView)dtHistory.DefaultView)
                 {
-                    DataRow test = drvRow.Row;
-                    string testing = (string) drvRow["Name"];
-                    if (testing.ToLower().StartsWith(searchValue))
+                    DataRow dtRows = drvRow.Row;
+                    string stName = (string) drvRow["Name"];
+                    if (stName.ToLower().StartsWith(searchValue))
                     {
-                        dtSearch.Rows.Add(test.ItemArray);
+                        dtSearch.Rows.Add(dtRows.ItemArray);
                     }
                 }
 

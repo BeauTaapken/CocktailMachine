@@ -45,7 +45,7 @@ namespace CocktailMachine.Class
             }
             else
             {
-                MessageBox.Show("Arduino not connected");
+                MessageBox.Show("Initial setup couldn't reach Arduino");
             }
         }
     }

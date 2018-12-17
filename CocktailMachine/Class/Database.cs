@@ -18,13 +18,11 @@ namespace CocktailMachine.Class
         List<string> allCocktailNamesList = new List<string>();
         List<string> drinksForCocktail = new List<string>();
         private MySqlDataAdapter planningadapter;
-        private MySqlDataAdapter drinkNameAdapter;
         private DataTable allCocktailNames = new DataTable();
-        private MySqlDataAdapter cocktailNameAdapter;
-        private int userID;
+        private int userIDAddAccount;
+        private int userIDUserHistory;
         private int cocktailID;
         private double price;
-        private int cocktail;
         private DateTime dtAge;
         private int cocktailAge;
 
@@ -52,27 +50,36 @@ namespace CocktailMachine.Class
         }
 
         //upload user info & fingerprint
-        public void uploadUserInfo(string username, DateTime userBirthday, string fingerprintCode)
+        public void addUserInfo(string username, DateTime userBirthday, int fingerprintCode)
         {
             try
             {
                 conn.Open();
-                MySqlCommand insertUser = new MySqlCommand(
+                MySqlCommand cmdInsertUser = new MySqlCommand(
                     "INSERT INTO `user`(`Name`, `Age`) VALUES (@name, @birthday)",
                     conn);
-                MySqlCommand selectUserID = new MySqlCommand(
-                    "SELECT ID FROM user", 
-                    conn);
-                MySqlCommand command = new MySqlCommand(
-                    "INSERT INTO `fingerprints`(`Code`) VALUES(@fingerprintCode)",
-                    conn);
-                command.Parameters.AddWithValue("@fingerprintCode", fingerprintCode);
-                MySqlCommand selectFingerprint = new MySqlCommand(
-                    "SELECT Code, fingerprints.ID FROM fingerprints" ,
-                    conn);
+                cmdInsertUser.Parameters.AddWithValue("@name", username);
+                cmdInsertUser.Parameters.AddWithValue("@birthday", userBirthday);
+                cmdInsertUser.ExecuteNonQuery();
+                conn.Close();
 
-                insertUser.Parameters.AddWithValue("@name", username);
-                insertUser.Parameters.AddWithValue("@birthday", userBirthday);
+                conn.Open();
+                MySqlCommand cmdSelectUserID = new MySqlCommand("SELECT ID FROM user WHERE Name = @name", conn);
+                cmdSelectUserID.Parameters.AddWithValue("@name", username);
+                MySqlDataReader drSelectUserID = cmdSelectUserID.ExecuteReader();
+                while (drSelectUserID.Read())
+                {
+                    userIDAddAccount = Convert.ToInt32(drSelectUserID[0]);
+                }
+                conn.Close();
+
+                conn.Open();
+                MySqlCommand cmdAddFingerprint = new MySqlCommand(
+                    "INSERT INTO fingerprints(Code, User_ID) VALUES(@fingerprintCode, @userid)",
+                    conn);
+                cmdAddFingerprint.Parameters.AddWithValue("@fingerprintCode", fingerprintCode);
+                cmdAddFingerprint.Parameters.AddWithValue("@userid", userIDAddAccount);
+                cmdAddFingerprint.ExecuteNonQuery();
                 conn.Close();
             }
             catch (MySqlException)
@@ -87,34 +94,39 @@ namespace CocktailMachine.Class
             try
             {
                 conn.Open();
-                MySqlCommand cmdGetUserAge = new MySqlCommand("SELECT DATE(user.Age) FROM user INNER JOIN fingerprints ON (fingerprints.User_ID = user.ID) WHERE fingerprints.Code = @userid", conn);
+                MySqlCommand cmdGetUserAge =
+                    new MySqlCommand(
+                        "SELECT DATE(user.Age) FROM user INNER JOIN fingerprints ON (fingerprints.User_ID = user.ID) WHERE fingerprints.Code = @userid",
+                        conn);
                 cmdGetUserAge.Parameters.AddWithValue("@userid", userid);
                 MySqlDataReader drUserAge = cmdGetUserAge.ExecuteReader();
                 while (drUserAge.Read())
                 {
                     dtAge = Convert.ToDateTime(drUserAge[0]).Date;
                 }
+
                 conn.Close();
                 conn.Open();
-                MySqlCommand cmdGetCocktailAge = new MySqlCommand("SELECT Age FROM cocktail WHERE ID = @cocktailid", conn);
+                MySqlCommand cmdGetCocktailAge =
+                    new MySqlCommand("SELECT Age FROM cocktail WHERE ID = @cocktailid", conn);
                 cmdGetCocktailAge.Parameters.AddWithValue("@cocktailid", cocktailid);
                 MySqlDataReader drCocktailAge = cmdGetCocktailAge.ExecuteReader();
                 while (drCocktailAge.Read())
                 {
                     cocktailAge = Convert.ToInt32(drCocktailAge[0]);
                 }
+
                 conn.Close();
                 if (DateTime.Now.Year - dtAge.Year - 1 >= cocktailAge || DateTime.Now.Year - dtAge.Year == cocktailAge && DateTime.Now.Month >= dtAge.Month && DateTime.Now.Day >= dtAge.Day)
                 {
                     return true;
                 }
-                return false;
             }
             catch (Exception)
             {
                 MessageBox.Show("Couldn't check if person is old enought to drink the cocktail");
-                return false;
             }
+            return false;
         }
 
         // All drink names in datatable
@@ -202,7 +214,7 @@ namespace CocktailMachine.Class
                 MySqlDataReader drUserID = cmdSelectUserID.ExecuteReader();
                 while (drUserID.Read())
                 {
-                    userID = Convert.ToInt32(drUserID[0]);
+                    userIDUserHistory = Convert.ToInt32(drUserID[0]);
                 }
 
                 conn.Close();
@@ -224,7 +236,7 @@ namespace CocktailMachine.Class
                 cmdInsertHistoryInfo.Parameters.AddWithValue("@price", price);
                 cmdInsertHistoryInfo.Parameters.AddWithValue("@dateTime", DateTime.Now);
                 cmdInsertHistoryInfo.Parameters.AddWithValue("@cocktail_id", cocktailID);
-                cmdInsertHistoryInfo.Parameters.AddWithValue("@user_id", userID);
+                cmdInsertHistoryInfo.Parameters.AddWithValue("@user_id", userIDUserHistory);
                 cmdInsertHistoryInfo.ExecuteNonQuery();
                 conn.Close();
             }

@@ -21,30 +21,49 @@ namespace CocktailMachine.Window
     public partial class AddUserAccount
     {
         private UserHistory userHistory;
-
-
+        private User user;
 
         public AddUserAccount()
         {
             InitializeComponent();
             btUserHistory.Click += OpenUserHistory;
-            btAskForFingerprint.Click += test;
+            btAskForFingerprint.Click += btAskForFingerprint_Click;
+            btAddUser.Click += btAddUserAccount_Click;
+            dpAge.SelectedDateChanged += dpAge_SelectedDateChanged;
         }
 
-        private void test(object sender, RoutedEventArgs e)
+        public void setPrivates(UserHistory userHistory, User user)
         {
-            userHistory.UserFingerprint();
+            this.userHistory = userHistory;
+            this.user = user;
         }
 
-        public void OpenUserHistory(object sender, RoutedEventArgs e)
+        private void btAskForFingerprint_Click(object sender, RoutedEventArgs e)
+        {
+            user.getFingerprint();
+        }
+
+        private void dpAge_SelectedDateChanged(object sender, RoutedEventArgs e)
+        {
+            dpAge.Text = dpAge.DisplayDate.Year.ToString() + "-" + dpAge.DisplayDate.Month.ToString() + "-" + dpAge.DisplayDate.Day.ToString();
+        }
+
+        private void btAddUserAccount_Click(object sender, RoutedEventArgs e)
+        {
+            if (tbName.Text != String.Empty && dpAge.Text != String.Empty && iudFingerprint.Text != String.Empty)
+            {
+                user.addUserAccount(tbName.Text, Convert.ToDateTime(dpAge.Text), Convert.ToInt32(iudFingerprint.Text));
+            }
+            else
+            {
+                MessageBox.Show("Not every value has been entered");
+            }
+        }
+
+        private void OpenUserHistory(object sender, RoutedEventArgs e)
         {
             userHistory.Show();
             this.Hide();
-        }
-
-        public void setPrivates(UserHistory userHistory)
-        {
-            this.userHistory = userHistory;
         }
 
         protected override void OnClosed(EventArgs e)
