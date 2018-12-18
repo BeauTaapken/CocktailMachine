@@ -136,7 +136,7 @@ namespace CocktailMachine.Class
             {
                 drinksForCocktail.Clear();
                 conn.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT cocktail_drink.Drink_Dose, drink.Name FROM cocktail_drink INNER JOIN drink ON(drink.ID = cocktail_drink.Drink_ID) WHERE cocktail_drink.Cocktail_ID = @ID", conn);
+                MySqlCommand cmd = new MySqlCommand("SELECT drink.Name, cocktail_drink.Drink_Dose FROM cocktail_drink INNER JOIN drink ON(drink.ID = cocktail_drink.Drink_ID) WHERE cocktail_drink.Cocktail_ID = @ID", conn);
                 cmd.Parameters.AddWithValue("@ID", ID);
                 MySqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
