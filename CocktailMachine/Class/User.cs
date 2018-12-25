@@ -22,7 +22,7 @@ namespace CocktailMachine.Class
         public void getFingerprint()
         {
             receivedPrint = false;
-            arduinoConnection.SendMessage("fingerprint");
+            arduinoConnection.SendMessage("Fingerprint");
             Stopwatch s = new Stopwatch();
             s.Start();
             while (s.Elapsed < TimeSpan.FromSeconds(10) && receivedPrint == false)

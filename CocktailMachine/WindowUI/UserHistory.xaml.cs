@@ -25,10 +25,10 @@ namespace CocktailMachine
     {
         private AddUserAccount addUserAccount = new AddUserAccount();
         private ArduinoConnection arduinoConnection;
-        private GetUserHistory getUserHistory = new GetUserHistory();
+        private Class.UserHistory getUserHistory = new Class.UserHistory();
         private SetupArduino setupArduino = new SetupArduino();
         private User user = new User();
-        private Drinks drinks = new Drinks();
+        private Drink drinks = new Drink();
 
         public UserHistory()
         {

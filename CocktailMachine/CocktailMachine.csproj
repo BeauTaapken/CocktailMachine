@@ -93,11 +93,11 @@
     </Compile>
     <Compile Include="Class\ArduinoConnection.cs" />
     <Compile Include="Class\Database.cs" />
-    <Compile Include="Class\Drinks.cs" />
+    <Compile Include="Class\Drink.cs" />
     <Compile Include="Class\MessageBuilder.cs" />
     <Compile Include="Class\SetupArduino.cs" />
     <Compile Include="Class\User.cs" />
-    <Compile Include="Class\GetUserHistory.cs" />
+    <Compile Include="Class\UserHistory.cs" />
     <Compile Include="WindowUI\AddUserAccount.xaml.cs">
       <DependentUpon>AddUserAccount.xaml</DependentUpon>
     </Compile>

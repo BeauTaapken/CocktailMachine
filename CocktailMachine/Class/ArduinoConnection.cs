@@ -16,7 +16,7 @@ namespace CocktailMachine.Class
         private SerialPort serialPort;
         private MessageBuilder messageBuilder;
         private DispatcherTimer readMessageTimer;
-        private Drinks drinks = new Drinks();
+        private Drink drinks = new Drink();
         private AddUserAccount addUserAccount;
         private Database db;
         private bool messageReceived;

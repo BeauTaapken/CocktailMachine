@@ -11,16 +11,16 @@ using Newtonsoft.Json;
 
 namespace CocktailMachine.Class
 {
-    class Drinks
+    class Drink
     {
         // TODO get drinks from database(make function in database class) and return them to the arduino based on string gotten from the Arduino(can be tested with a hardcoded string), Made by Rik
 
         private Database db = new Database();
         private ArduinoConnection arduinoConnection;
         private int fingerprint;
-        private GetUserHistory getUserHistory;
+        private UserHistory getUserHistory;
 
-        public void setPrivates(ArduinoConnection arduinoconnection, GetUserHistory getuserhistory)
+        public void setPrivates(ArduinoConnection arduinoconnection, UserHistory getuserhistory)
         {
             arduinoConnection = arduinoconnection;
             getUserHistory = getuserhistory;
