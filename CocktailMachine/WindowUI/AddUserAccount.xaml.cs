@@ -29,7 +29,6 @@ namespace CocktailMachine.Window
             btUserHistory.Click += OpenUserHistory;
             btAskForFingerprint.Click += btAskForFingerprint_Click;
             btAddUser.Click += btAddUserAccount_Click;
-            dpAge.SelectedDateChanged += dpAge_SelectedDateChanged;
         }
 
         public void setPrivates(UserHistory userHistory, User user)
@@ -43,16 +42,12 @@ namespace CocktailMachine.Window
             user.getFingerprint();
         }
 
-        private void dpAge_SelectedDateChanged(object sender, RoutedEventArgs e)
-        {
-            dpAge.Text = dpAge.DisplayDate.Year.ToString() + "-" + dpAge.DisplayDate.Month.ToString() + "-" + dpAge.DisplayDate.Day.ToString();
-        }
-
         private void btAddUserAccount_Click(object sender, RoutedEventArgs e)
         {
-            if (tbName.Text != String.Empty && dpAge.Text != String.Empty && iudFingerprint.Text != String.Empty)
+            if (tbName.Text != String.Empty && dpAge.Text != String.Empty && iudFingerprint.Value != 0)
             {
                 user.addUserAccount(tbName.Text, Convert.ToDateTime(dpAge.Text), Convert.ToInt32(iudFingerprint.Text));
+                MessageBox.Show("user has been added");
             }
             else
             {

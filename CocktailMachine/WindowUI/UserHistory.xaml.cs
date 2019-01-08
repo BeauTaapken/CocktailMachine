@@ -35,7 +35,7 @@ namespace CocktailMachine
             InitializeComponent();
 
             MessageBuilder messageBuilder = new MessageBuilder('#', '%');
-            arduinoConnection = new ArduinoConnection("COM10", 9600, messageBuilder, addUserAccount);
+            arduinoConnection = new ArduinoConnection("COM12", 9600, messageBuilder, addUserAccount);
 
             setupArduino.setPrivate(arduinoConnection);
             user.setPrivates(arduinoConnection);

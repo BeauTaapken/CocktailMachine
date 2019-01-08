@@ -171,7 +171,15 @@ namespace CocktailMachine.Class
             if (message.StartsWith("FingerID:"))
             {
                 MessageReceived = true;
-                addUserAccount.iudFingerprint.Text = message.Replace("FingerID:", "");
+                if (message != "FingerID:-1")
+                {
+                    MessageBox.Show("Vinger gescanned.");
+                    addUserAccount.iudFingerprint.Text = message.Replace("FingerID:", "");
+                }
+                else
+                {
+                    MessageBox.Show("Vinger niet gescanned.");
+                }
             }
             else if (message.StartsWith("Cocktail:"))
             {

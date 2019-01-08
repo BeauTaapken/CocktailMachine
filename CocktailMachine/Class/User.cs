@@ -21,11 +21,11 @@ namespace CocktailMachine.Class
 
         public void getFingerprint()
         {
-            receivedPrint = false;
+            arduinoConnection.MessageReceived = false;
             arduinoConnection.SendMessage("Fingerprint");
             Stopwatch s = new Stopwatch();
             s.Start();
-            while (s.Elapsed < TimeSpan.FromSeconds(10) && receivedPrint == false)
+            while (s.Elapsed < TimeSpan.FromSeconds(30) && arduinoConnection.MessageReceived == false)
             {
                 if (arduinoConnection.MessageReceived)
                 {
@@ -34,14 +34,7 @@ namespace CocktailMachine.Class
             }
             s.Stop();
 
-            if (receivedPrint)
-            {
-                MessageBox.Show("Fingerprint has been scanned");
-            }
-            else
-            {
-                MessageBox.Show("Fingerprint not scanned. Try again");
-            }
+            
         }
 
         public void addUserAccount(string name, DateTime age, int fingerprint)
