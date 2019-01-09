@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace CocktailMachine.Class
 {
-    class UserHistory
+    public class UserHistory
     {
         //TODO Add function for returning the userhistory of today and adding items to the userhistory table(in database). Made by Beau
         private Database db = new Database();

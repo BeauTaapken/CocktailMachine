@@ -16,7 +16,7 @@ namespace CocktailMachine.Class
         private SerialPort serialPort;
         private MessageBuilder messageBuilder;
         private DispatcherTimer readMessageTimer;
-        private Drink drinks = new Drink();
+        private Drink drinks;
         private AddUserAccount addUserAccount;
         private Database db;
         private bool messageReceived;
@@ -39,7 +39,7 @@ namespace CocktailMachine.Class
         //public string PortName { get { return serialPort.PortName; } }
 
         //Initializes the arduino to be able to connect properly
-        public ArduinoConnection(string portName, int baudRate, MessageBuilder messageBuilder, AddUserAccount adduseraccount)
+        public ArduinoConnection(string portName, int baudRate, MessageBuilder messageBuilder, AddUserAccount adduseraccount, Drink drinks)
         {
             if (portName == null)
             {
@@ -60,6 +60,7 @@ namespace CocktailMachine.Class
             serialPort = new SerialPort();
             serialPort.BaudRate = baudRate;
             serialPort.PortName = portName;
+            this.drinks = drinks;
 
             this.messageBuilder = messageBuilder;
             addUserAccount = adduseraccount;

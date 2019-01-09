@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace CocktailMachine.Class
 {
-    class Drink
+    public class Drink
     {
         // TODO get drinks from database(make function in database class) and return them to the arduino based on string gotten from the Arduino(can be tested with a hardcoded string), Made by Rik
 
@@ -34,14 +34,21 @@ namespace CocktailMachine.Class
             if (db.oldEnoughForCocktail(fingerprint, cocktailID))
             {
                 List<string> amountDrinks = db.GetAllDrinkNamesWhereCocktailID(cocktailID);
-                if (arduinoConnection.SendMessage("AmountDrinks:" + string.Join(";", amountDrinks)))
+                if (amountDrinks.Count != 0)
                 {
-                    db.InsertIntoUserHistory(fingerprint, message.Split(';')[1]);
-                    getUserHistory.FillUserHistory();
+                    if (arduinoConnection.SendMessage("AmountDrinks:" + string.Join(";", amountDrinks)))
+                    {
+                        db.InsertIntoUserHistory(fingerprint, message.Split(';')[1]);
+                        getUserHistory.FillUserHistory();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error sending message to arduino");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Error sending message to arduino");
+                    MessageBox.Show("cocktail heeft geen dranken");
                 }
             }
             else
