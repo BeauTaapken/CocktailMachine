@@ -117,6 +117,8 @@ namespace CocktailMachine.Class
                 }
 
                 conn.Close();
+
+                //Checks if user is old enough
                 if (DateTime.Now.Year - dtAge.Year - 1 >= cocktailAge || DateTime.Now.Year - dtAge.Year == cocktailAge && DateTime.Now.Month >= dtAge.Month && DateTime.Now.Day >= dtAge.Day)
                 {
                     return true;

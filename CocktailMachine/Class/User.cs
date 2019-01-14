@@ -19,6 +19,7 @@ namespace CocktailMachine.Class
             arduinoConnection = arduinoconnection;
         }
 
+        //Code for sending fingerprint request to arduino and waiting for 30 seconds or until the fingerprint has been gotten
         public void getFingerprint()
         {
             arduinoConnection.MessageReceived = false;

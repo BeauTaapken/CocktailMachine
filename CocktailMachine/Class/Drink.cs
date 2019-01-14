@@ -56,7 +56,7 @@ namespace CocktailMachine.Class
                 arduinoConnection.SendMessage("TooYoung");
             }
         }
-
+        
         private int getCocktailID(string cocktail)
         {
             return db.getCocktailID(cocktail);
