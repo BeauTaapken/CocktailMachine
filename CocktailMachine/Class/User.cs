@@ -34,8 +34,10 @@ namespace CocktailMachine.Class
                 }
             }
             s.Stop();
-
-            
+            if (arduinoConnection.MessageReceived == false)
+            {
+                MessageBox.Show("Vingerprint niet binnengekregen. Probeer opnieuw");
+            }
         }
 
         public void addUserAccount(string name, DateTime age, int fingerprint)
