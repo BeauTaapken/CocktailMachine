@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="140"/>
             </Grid.ColumnDefinitions>
             <Grid Background="#222c2e" Margin="10">
-                <Image Grid.Column="0" Source="../Images/Logo.png" Height="90" Width="120"/>
+                <Image Grid.Column="0" Source="../Image/Logo.png" Height="90" Width="120"/>
             </Grid>
             <Button Grid.Column="2" Margin="10" Content="User History" FontSize="22" Background="#d8b57b" Name="btUserHistory"/>
         </Grid>
@@ -40,6 +40,6 @@
             <Button Name="btAskForFingerprint" Height="50" Width="150" Margin="320,150,10,10" Grid.Column="1" VerticalAlignment="Top" Background="#d8b57b" Content="Fingerprint" FontSize="22" HorizontalAlignment="Left"/>
             <Button Name="btAddUser" Height="50" Width="150" HorizontalAlignment="Left" Margin="10,220,10,10" Grid.Column="1" VerticalAlignment="Top" Background="#d8b57b" Content="Add user" FontSize="22"/>
         </Grid>
-        <Image Grid.Row="2" Source="../Images/Logo.png" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform"/>
+        <Image Grid.Row="2" Source="../Image/Logo.png" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform"/>
     </Grid>
 </Window>
