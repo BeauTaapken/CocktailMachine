@@ -36,7 +36,7 @@ namespace CocktailMachine.Class
                 string message = ListToSeperatedString(allCocktails);
                 if (arduinoConnection.SendMessage(message))
                 {
-                    
+
                 }
                 else
                 {

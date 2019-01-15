@@ -134,7 +134,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Logo.png" />
+    <Resource Include="Image\Logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MySql.Data.dll" />

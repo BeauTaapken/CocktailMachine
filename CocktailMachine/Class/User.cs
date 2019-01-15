@@ -26,7 +26,7 @@ namespace CocktailMachine.Class
             arduinoConnection.SendMessage("Fingerprint");
             Stopwatch s = new Stopwatch();
             s.Start();
-            while (s.Elapsed < TimeSpan.FromSeconds(30) && arduinoConnection.MessageReceived == false)
+            while (s.Elapsed < TimeSpan.FromSeconds(20) && receivedPrint == false)
             {
                 if (arduinoConnection.MessageReceived)
                 {
@@ -34,10 +34,6 @@ namespace CocktailMachine.Class
                 }
             }
             s.Stop();
-            if (arduinoConnection.MessageReceived == false)
-            {
-                MessageBox.Show("Vingerprint niet binnengekregen. Probeer opnieuw");
-            }
         }
 
         public void addUserAccount(string name, DateTime age, int fingerprint)

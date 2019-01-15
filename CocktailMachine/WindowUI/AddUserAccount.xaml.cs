@@ -44,9 +44,9 @@ namespace CocktailMachine.Window
 
         private void btAddUserAccount_Click(object sender, RoutedEventArgs e)
         {
-            if (tbName.Text != String.Empty && dpAge.Text != String.Empty && iudFingerprint.Value != 0)
+            if (tbName.Text != String.Empty && dpAge.Text != String.Empty && tbFingerprint.Text != "0")
             {
-                user.addUserAccount(tbName.Text, Convert.ToDateTime(dpAge.Text), Convert.ToInt32(iudFingerprint.Text));
+                user.addUserAccount(tbName.Text, Convert.ToDateTime(dpAge.Text), Convert.ToInt32(tbFingerprint.Text));
                 MessageBox.Show("user has been added");
             }
             else

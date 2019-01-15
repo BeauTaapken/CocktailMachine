@@ -175,7 +175,7 @@ namespace CocktailMachine.Class
                 if (message != "FingerID:-1")
                 {
                     MessageBox.Show("Vinger gescanned.");
-                    addUserAccount.iudFingerprint.Text = message.Replace("FingerID:", "");
+                    addUserAccount.tbFingerprint.Text = message.Replace("FingerID:", "");
                 }
                 else
                 {
